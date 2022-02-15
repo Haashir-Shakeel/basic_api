@@ -45,7 +45,13 @@ def article_detail(request,pk):
         return JsonResponse(serializer.data)
 
     elif request.method == 'PUT':
-        Pass
+        data = JSONParser().parse(request)
+        serializer = ArticleSerializer(article, data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.data, status=400)
 
     elif request.method == 'DELETE':
         article.delete()
