@@ -11,8 +11,35 @@ from api_basic.models import Article
 from api_basic.serializers import ArticleSerializer
 # from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
+from rest_framework.mixins import ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
+from rest_framework.generics import GenericAPIView
 
+# **************** USING MIXIN CLASS BASED VIEWS ******************
 
+class ArticleListMixin(GenericAPIView,ListModelMixin,CreateModelMixin):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
+    def get(self, request, *args,**kwargs):
+        return self.list(request, *args,**kwargs)
+
+    def post(self, request, *args,**kwargs):
+        return self.create(request, *args,**kwargs)
+
+class ArticleDetailMixin(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
+    queryset = Article.objects.all()
+    serializer_class= ArticleSerializer
+
+    def get(self,request,*args,**kwargs):
+        return self.retrieve(request,*args,**kwargs)
+
+    def put(self, request,*args,**kwargs):
+        return self.update(request,*args,**kwargs)
+
+    def delete(self, request,*args,**kwargs):
+        return self.destroy(request,*args,**kwargs)
+
+# ************* CLASS BASED API VIEWS *********************
 class ArticleListApiView(APIView):
     def get(self,request,format=None):
         articles = Article.objects.all()
@@ -59,7 +86,7 @@ class AricleDetailApiView(APIView):
 
 
 
-# ***************   FUNCTION BASED API VIEW **********************
+# ***************   FUNCTION BASED API VIEWS **********************
 
 @api_view(['GET','POST'])
 def article_list(request, format=None):
