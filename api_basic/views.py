@@ -13,6 +13,17 @@ from api_basic.serializers import ArticleSerializer
 from rest_framework.views import APIView
 from rest_framework.mixins import ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
 from rest_framework.generics import GenericAPIView
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
+
+# **************** USING GENERIC CLASS BASED VIEWS ***************** 
+
+class ArticleListGeneric(ListCreateAPIView):
+    queryset=Article.objects.all()
+    serializer_class = ArticleSerializer
+
+class ArticleDetailGeneric(RetrieveUpdateDestroyAPIView):
+    queryset=Article.objects.all()
+    serializer_class = ArticleSerializer
 
 # **************** USING MIXIN CLASS BASED VIEWS ******************
 
