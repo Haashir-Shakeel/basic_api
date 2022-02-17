@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.mixins import ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
 from rest_framework.generics import GenericAPIView
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
-from rest_framework.authentication import SessionAuthentication,BasicAuthentication
+from rest_framework.authentication import SessionAuthentication,BasicAuthentication,TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -24,13 +24,13 @@ from rest_framework.permissions import IsAuthenticated
 class ArticleListGeneric(ListCreateAPIView):
     queryset=Article.objects.all()
     serializer_class = ArticleSerializer
-    authentication_classes=[SessionAuthentication,BasicAuthentication]
+    authentication_classes=[TokenAuthentication]
     permission_classes = [IsAuthenticated]  
 
 class ArticleDetailGeneric(RetrieveUpdateDestroyAPIView):
     queryset=Article.objects.all()
     serializer_class = ArticleSerializer
-    authentication_classes=[SessionAuthentication,BasicAuthentication]
+    authentication_classes=[TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
 # **************** USING MIXIN CLASS BASED VIEWS ******************
