@@ -14,22 +14,34 @@ from rest_framework.views import APIView
 from rest_framework.mixins import ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
 from rest_framework.generics import GenericAPIView
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
+from rest_framework.authentication import SessionAuthentication,BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+
 
 # **************** USING GENERIC CLASS BASED VIEWS ***************** 
 
 class ArticleListGeneric(ListCreateAPIView):
     queryset=Article.objects.all()
     serializer_class = ArticleSerializer
+    authentication_classes=[SessionAuthentication,BasicAuthentication]
+    permission_classes = [IsAuthenticated]  
 
 class ArticleDetailGeneric(RetrieveUpdateDestroyAPIView):
     queryset=Article.objects.all()
     serializer_class = ArticleSerializer
+    authentication_classes=[SessionAuthentication,BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 # **************** USING MIXIN CLASS BASED VIEWS ******************
+
+
 
 class ArticleListMixin(GenericAPIView,ListModelMixin,CreateModelMixin):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    authentication_classes=[SessionAuthentication,BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args,**kwargs):
         return self.list(request, *args,**kwargs)
@@ -40,6 +52,9 @@ class ArticleListMixin(GenericAPIView,ListModelMixin,CreateModelMixin):
 class ArticleDetailMixin(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
     queryset = Article.objects.all()
     serializer_class= ArticleSerializer
+    authentication_classes=[SessionAuthentication,BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
 
     def get(self,request,*args,**kwargs):
         return self.retrieve(request,*args,**kwargs)
@@ -52,6 +67,9 @@ class ArticleDetailMixin(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,Dest
 
 # ************* CLASS BASED API VIEWS *********************
 class ArticleListApiView(APIView):
+    authentication_classes=[SessionAuthentication,BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     def get(self,request,format=None):
         articles = Article.objects.all()
         serializer= ArticleSerializer(articles, many = True)
@@ -66,6 +84,8 @@ class ArticleListApiView(APIView):
 
 
 class AricleDetailApiView(APIView):
+    authentication_classes=[SessionAuthentication,BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     def get_object(self,pk):
         try:
             return Article.objects.get(id=pk)
@@ -100,6 +120,8 @@ class AricleDetailApiView(APIView):
 # ***************   FUNCTION BASED API VIEWS **********************
 
 @api_view(['GET','POST'])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 def article_list(request, format=None):
     if request.method == 'GET':
         articles = Article.objects.all()
