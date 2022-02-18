@@ -1,10 +1,16 @@
-from unicodedata import name
-from django.urls import path
+from django.urls import path, include
 from .views import AricleDetailApiView, ArticleDetailGeneric, ArticleDetailMixin, ArticleListApiView, ArticleListGeneric, ArticleListMixin, article_list
 from . import views
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+# router.register('article', ArticleViewSet, basename='article')
+
+
 
 urlpatterns=[
+    # path('viewset/', include(router.urls)),
     path('article/',article_list,),
     path('article/<int:pk>',views.article_detail,name='article_detail'),
     path('classarticle/',ArticleListApiView.as_view(),name='class_article_list'),
