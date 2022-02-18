@@ -28,6 +28,8 @@ from django.shortcuts import get_object_or_404
 class ArticleModelViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    authentication_classes=[TokenAuthentication]
+
 # GenericViewSet
 
 class ArticleGenericViewSet(viewsets.GenericViewSet,ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
