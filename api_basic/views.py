@@ -1,4 +1,3 @@
-#https://www.youtube.com/watch?v=B38aDwUpcFc
 from django.http import Http404
 from rest_framework.decorators import api_view
 from django.shortcuts import render
@@ -20,7 +19,22 @@ from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 
 
+
+
+
 #***************** VIEWSETS *********************
+
+# ModelViewSet
+class ArticleModelViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+# GenericViewSet
+
+class ArticleGenericViewSet(viewsets.GenericViewSet,ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
+# ViewSet
 class ArticleViewSet(viewsets.ViewSet):
 
     def list(self, request,format=None):

@@ -1,13 +1,13 @@
 from django.urls import path, include
-from .views import AricleDetailApiView, ArticleDetailGeneric, ArticleDetailMixin, ArticleListApiView, ArticleListGeneric, ArticleListMixin, article_list, ArticleViewSet
+from .views import AricleDetailApiView, ArticleDetailGeneric, ArticleDetailMixin, ArticleListApiView, ArticleListGeneric, ArticleListMixin, article_list, ArticleViewSet, ArticleGenericViewSet, ArticleModelViewSet
 from . import views
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register('article', ArticleViewSet, basename='article')
-
-
+router.register('genarticle',ArticleGenericViewSet,basename='genarticle')
+router.register('modarticle',ArticleModelViewSet,basename='modarticle')
 
 
 urlpatterns=[
@@ -26,3 +26,7 @@ urlpatterns=[
 urlpatterns = format_suffix_patterns(urlpatterns)
 urlpatterns.append(path(r'viewset/', include(router.urls)))
 urlpatterns.append(path(r'viewset/<int:pk>/', include(router.urls)))
+urlpatterns.append(path(r'genericviewset/', include(router.urls)))
+urlpatterns.append(path(r'genericviewset/<int:pk>/', include(router.urls)))
+urlpatterns.append(path(r'modelviewset/', include(router.urls)))
+urlpatterns.append(path(r'modelviewset/<int:pk>/', include(router.urls)))
