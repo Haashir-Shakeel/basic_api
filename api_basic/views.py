@@ -22,13 +22,14 @@ from django.shortcuts import get_object_or_404
 
 #***************** VIEWSETS *********************
 class ArticleViewSet(viewsets.ViewSet):
-    def list(self, request):
+
+    def list(self, request,format=None):
         articles=Article.objects.all()
         serializer = ArticleSerializer(articles,many=True)
         return Response(serializer.data)
     
 
-    def create(self,request):
+    def create(self,request,format=None):
         serializer=ArticleSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -36,11 +37,27 @@ class ArticleViewSet(viewsets.ViewSet):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-    def retrieve(self,request,pk=None):
+    def retrieve(self,request,pk=None,format=None):
         queryset=Article.objects.all()
-        article = get_object_or_404(id=pk)
+        article = get_object_or_404(queryset,id=pk)
         serializer=ArticleSerializer(article)
         return Response(serializer.data)
+
+    def update(self,request,pk=None,format=None):
+        article=Article.objects.get(id=pk)
+        serializer=ArticleSerializer(article,data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self,request,pk=None,fromat=None):
+        article=Article.objects.get(id=pk)
+        article.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 
 

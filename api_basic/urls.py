@@ -25,3 +25,4 @@ urlpatterns=[
 
 urlpatterns = format_suffix_patterns(urlpatterns)
 urlpatterns.append(path(r'viewset/', include(router.urls)))
+urlpatterns.append(path(r'viewset/<int:pk>/', include(router.urls)))
